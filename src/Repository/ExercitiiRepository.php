@@ -18,9 +18,9 @@ class ExercitiiRepository extends ServiceEntityRepository
 
     public function findAllExercises(): array
     {
-        return $this->createQueryBuilder('e')
-            ->select('e', 't')
-            ->join('e.tip_id', 't')
+        return $this->createQueryBuilder('exercitii')
+            ->select('exercitii', 'tip')
+            ->join('exercitii.tip_id', 'tip')
             ->getQuery()
             ->getResult();
     }
