@@ -1,0 +1,29 @@
+{# templates/exercise/view_exercises.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}View Exercises{% endblock %}
+
+{% block body %}
+    <h1>Exercises</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Video Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for exercise in exercises %}
+            <tr>
+                <td>{{ exercise.id }}</td>
+                <td>{{ exercise.tipid.nume }}</td>
+                <td>{{ exercise.nume }}</td>
+                <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

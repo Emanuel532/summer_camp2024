@@ -16,6 +16,14 @@ class ExercitiiRepository extends ServiceEntityRepository
         parent::__construct($registry, Exercitii::class);
     }
 
+    public function findAllExercises(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e', 't')
+            ->join('e.tip_id', 't')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Exercitii[] Returns an array of Exercitii objects
     //     */
