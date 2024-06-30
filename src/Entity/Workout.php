@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\WorkoutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WorkoutRepository::class)]
@@ -22,21 +23,23 @@ class Workout
     #[ORM\JoinColumn(nullable: false)]
     private ?Tip $tip_id = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'workouts')]
-    private Collection $user_id;
+
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date = null;
+
+    #[ORM\ManyToOne(inversedBy: 'workouts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     /**
      * @var Collection<int, ExerciseLog>
      */
-    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout_id')]
+    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout')]
     private Collection $exerciseLogs;
 
     public function __construct()
     {
-        $this->user_id = new ArrayCollection();
         $this->exerciseLogs = new ArrayCollection();
     }
 
@@ -69,26 +72,28 @@ class Workout
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUserId(): Collection
+
+
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->user_id;
+        return $this->date;
     }
 
-    public function addUserId(User $userId): static
+    public function setDate(?\DateTimeInterface $date): static
     {
-        if (!$this->user_id->contains($userId)) {
-            $this->user_id->add($userId);
-        }
+        $this->date = $date;
 
         return $this;
     }
 
-    public function removeUserId(User $userId): static
+    public function getUser(): ?User
     {
-        $this->user_id->removeElement($userId);
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
@@ -105,7 +110,7 @@ class Workout
     {
         if (!$this->exerciseLogs->contains($exerciseLog)) {
             $this->exerciseLogs->add($exerciseLog);
-            $exerciseLog->setWorkoutId($this);
+            $exerciseLog->setWorkout($this);
         }
 
         return $this;
@@ -115,8 +120,8 @@ class Workout
     {
         if ($this->exerciseLogs->removeElement($exerciseLog)) {
             // set the owning side to null (unless already changed)
-            if ($exerciseLog->getWorkoutId() === $this) {
-                $exerciseLog->setWorkoutId(null);
+            if ($exerciseLog->getWorkout() === $this) {
+                $exerciseLog->setWorkout(null);
             }
         }
 

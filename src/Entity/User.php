@@ -29,13 +29,16 @@ class User
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column]
-    private ?bool $gender = null;
+    private ?int $gender = null;
 
     /**
      * @var Collection<int, Workout>
      */
-    #[ORM\ManyToMany(targetEntity: Workout::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Workout::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $workouts;
+
+
+
 
     public function __construct()
     {
@@ -95,16 +98,23 @@ class User
         return $this;
     }
 
-    public function isGender(): ?bool
+    public function isGender(): ?int
     {
         return $this->gender;
     }
 
-    public function setGender(bool $gender): static
+    public function setGender(int $gender): static
     {
         $this->gender = $gender;
 
         return $this;
+    }
+
+
+
+    public function getGender(): ?int
+    {
+        return $this->gender;
     }
 
     /**
@@ -119,7 +129,7 @@ class User
     {
         if (!$this->workouts->contains($workout)) {
             $this->workouts->add($workout);
-            $workout->addUserId($this);
+            $workout->setUser($this);
         }
 
         return $this;
@@ -128,9 +138,13 @@ class User
     public function removeWorkout(Workout $workout): static
     {
         if ($this->workouts->removeElement($workout)) {
-            $workout->removeUserId($this);
+            // set the owning side to null (unless already changed)
+            if ($workout->getUser() === $this) {
+                $workout->setUser(null);
+            }
         }
 
         return $this;
     }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ExerciseLogRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciseLogRepository::class)]
@@ -13,31 +14,23 @@ class ExerciseLog
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Workout $workout_id = null;
-
     #[ORM\Column]
     private ?int $nr_reps = null;
 
-    #[ORM\Column]
-    private ?int $durata = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $duration = null;
+
+    #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Workout $workout = null;
+
+    #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercitii $exercise = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getWorkoutId(): ?Workout
-    {
-        return $this->workout_id;
-    }
-
-    public function setWorkoutId(?Workout $workout_id): static
-    {
-        $this->workout_id = $workout_id;
-
-        return $this;
     }
 
     public function getNrReps(): ?int
@@ -52,14 +45,38 @@ class ExerciseLog
         return $this;
     }
 
-    public function getDurata(): ?int
+    public function getDuration(): ?\DateTimeInterface
     {
-        return $this->durata;
+        return $this->duration;
     }
 
-    public function setDurata(int $durata): static
+    public function setDuration(?\DateTimeInterface $duration): static
     {
-        $this->durata = $durata;
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getWorkout(): ?Workout
+    {
+        return $this->workout;
+    }
+
+    public function setWorkout(?Workout $workout): static
+    {
+        $this->workout = $workout;
+
+        return $this;
+    }
+
+    public function getExercise(): ?Exercitii
+    {
+        return $this->exercise;
+    }
+
+    public function setExercise(?Exercitii $exercise): static
+    {
+        $this->exercise = $exercise;
 
         return $this;
     }
