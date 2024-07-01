@@ -24,6 +24,15 @@ class ExercitiiRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function deleteExercise($exercise_id) {
+        return $this->createQueryBuilder('exercitii')
+            ->delete()
+            ->where('exercitii.id = :id')
+            ->setParameter('id', $exercise_id)
+            ->getQuery()
+            ->execute();
+    }
     //    /**
     //     * @return Exercitii[] Returns an array of Exercitii objects
     //     */

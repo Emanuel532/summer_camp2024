@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="position-relative" style="height: 100vh;width: 100%">
+        <div class="d-flex justify-content-center align-items-center flex-column" style="height: 100vh;">
+            <p>Delete ex:  {{ exercise_id }} </p>
+        <p>Operation status: <b>{{ status }}</b></p>
+        <a href ="{{ app.request.baseUrl}}{{  path('view_exercises') }}"><button class="btn btn-primary hBack" type="button">Back</button></a>
+        </div>
+    </div>
+    {% endblock %}
+
+{% block title %}
+Delete exercise {{ exercise_id }}
+{% endblock %}
+

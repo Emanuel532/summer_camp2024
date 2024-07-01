@@ -24,7 +24,7 @@
                     <td>{{ exercise.tipid.nume }}</td>
                     <td>{{ exercise.nume }}</td>
                     <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
-                    <td><a href="#" class="btn btn-danger">Delete</a></td>
+                    <td><a href="{{ path('delete_exercise', {'id': exercise.id }) }}" class="btn btn-danger">Delete</a></td>
                 </tr>
             {% endfor %}
             </tbody>
