@@ -25,17 +25,18 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $parola = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $birthday = null;
-
-    #[ORM\Column]
-    private ?int $gender = null;
 
     /**
      * @var Collection<int, Workout>
      */
     #[ORM\OneToMany(targetEntity: Workout::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $workouts;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $birthday = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $gender = null;
 
 
 
@@ -86,36 +87,8 @@ class User
         return $this;
     }
 
-    public function getBirthday(): ?\DateTimeInterface
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(\DateTimeInterface $birthday): static
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function isGender(): ?int
-    {
-        return $this->gender;
-    }
-
-    public function setGender(int $gender): static
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
 
 
-
-    public function getGender(): ?int
-    {
-        return $this->gender;
-    }
 
     /**
      * @return Collection<int, Workout>
@@ -143,6 +116,30 @@ class User
                 $workout->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(?\DateTimeInterface $birthday): static
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): static
+    {
+        $this->gender = $gender;
 
         return $this;
     }

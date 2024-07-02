@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View Users{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Users</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Gender</th>
+                <th>Workouts</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.nume }}</td>
+                    <td>{{ user.mail }}</td>
+                    <td>{{ user.birthday ? user.birthday|date('Y-m-d') : 'N/A' }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>
+                        <ul>
+                            {% for workout in user.workouts %}
+                                <li>{{ workout.nume }} ({{ workout.date|date('Y-m-d') }})</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <a href="path" class="btn btn-primary">Edit</a>
+                        <a href="{{ path('delete_user', {'id': user.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

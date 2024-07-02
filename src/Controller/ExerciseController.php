@@ -18,7 +18,7 @@ class ExerciseController extends AbstractController
 {
 
 
-    #[Route('/delete-exercise/{id}', name: 'delete_exercise')]
+    #[Route('/exercises/delete/{id}', name: 'delete_exercise')]
     public function deleteExercise($id, ExercitiiRepository $exercitiiRepository): Response
     {
         $deletedRows = $exercitiiRepository->deleteExercise($id);
@@ -27,7 +27,7 @@ class ExerciseController extends AbstractController
         return $this->render('exercises/delete_exercise.html.twig', ["exercise_id" => $id, 'status' => $status]);
     }
 
-    #[Route('/view-exercises', name: 'view_exercises')]
+    #[Route('/exercises', name: 'view_exercises')]
     public function viewExercises(ExercitiiRepository $exercitiiRepository): Response
     {
         $exercises = $exercitiiRepository->findAllExercises();
