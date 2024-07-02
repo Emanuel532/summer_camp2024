@@ -24,11 +24,19 @@
                     <td>{{ exercise.tipid.nume }}</td>
                     <td>{{ exercise.nume }}</td>
                     <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
-                    <td><a href="{{ path('delete_exercise', {'id': exercise.id }) }}" class="btn btn-danger">Delete</a></td>
+                    <td><button class="btn btn-danger" onclick="confirmDelete('{{ path('delete_exercise', {'id': exercise.id }) }}')">Delete</button></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        function confirmDelete(deleteUrl) {
+            if (confirm('Are you sure you want to delete this exercise?')) {
+                window.location.href = deleteUrl;
+            }
+        }
+    </script>
 {% endblock %}
 
