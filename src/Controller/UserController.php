@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\UserType;
+use App\Form\Type\UserUpdateType;
 use App\Repository\ExercitiiRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,5 +59,31 @@ class UserController extends AbstractController
         $status = $deletedRows > 0 ? 'success' : 'failure';
 
         return $this->render('users/delete_exercise.html.twig', ["user_id" => $id, 'status' => $status]);
+    }
+
+    #[Route('/users/{id}/update', name: 'update_user', methods: ['GET', "POST"])]
+    public function update($id, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        //dd($id);
+        $user = $userRepository->find($id);
+
+        $form = $this->createForm(UserUpdateType::class, $user, [
+        ]);
+
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $form->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->forward('users/updateStatusPage.html.twig', ['status' => 'successful']);
+        }
+
+
+        return $this->render('users/updateUserPage.html.twig', ['form' => $form]);
     }
 }

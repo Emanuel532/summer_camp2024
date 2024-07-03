@@ -60,7 +60,7 @@ class ExerciseController extends AbstractController
 
             $tip_de_adaugat = $tipRepository->find($exercise["tip"]);
 
-            $exercitiu->setNume($exercise["nume"] );
+            $exercitiu->setNume($exercise["nume"]);
             $exercitiu->setLinkVideo($exercise["link_video"]);
             $exercitiu->setTipId($tip_de_adaugat);
 
