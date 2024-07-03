@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Exercitii;
 use App\Form\Type\ExerciseType;
 use App\Repository\ExercitiiRepository;
+use App\Repository\TipRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,11 +40,14 @@ class ExerciseController extends AbstractController
     }
 
     #[Route('/exercises/new', methods: array('GET', 'POST'))]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TipRepository $tipRepository): Response
     {
         $exercise = new Exercitii();
 
+        $tip_values = $tipRepository->findAll();
+
         $form = $this->createForm(ExerciseType::class, $exercise, [
+            'data' => $tip_values,
         ]);
 
 
@@ -51,7 +55,16 @@ class ExerciseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $exercise = $form->getData();
-            $entityManager->persist($exercise);
+
+            $exercitiu = new Exercitii();
+
+            $tip_de_adaugat = $tipRepository->find($exercise["tip"]);
+
+            $exercitiu->setNume($exercise["nume"] );
+            $exercitiu->setLinkVideo($exercise["link_video"]);
+            $exercitiu->setTipId($tip_de_adaugat);
+
+            $entityManager->persist($exercitiu);
             $entityManager->flush();
         }
 
