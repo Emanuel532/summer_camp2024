@@ -62,25 +62,20 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}/update', name: 'update_user', methods: ['GET', "POST"])]
-    public function update($id, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function update(User $user, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        //dd($id);
-        $user = $userRepository->find($id);
 
-        $form = $this->createForm(UserUpdateType::class, $user, [
-        ]);
+        $form = $this->createForm(UserUpdateType::class, $user, ['action' => 'update_user']);
 
 
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $form->getData();
-            $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->forward('users/updateStatusPage.html.twig', ['status' => 'successful']);
+            return $this->render('users/updateStatusPage.html.twig', ['status' => 'successful']);
         }
 
 

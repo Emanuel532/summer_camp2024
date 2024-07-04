@@ -1,4 +1,3 @@
-{# templates/exercise/view_exercises.html.twig #}
 
 {% extends 'base.html.twig' %}
 
@@ -15,6 +14,7 @@
                 <th>Name</th>
                 <th>Video Link</th>
                 <th>Delete</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -22,19 +22,26 @@
                 <tr>
                     <td>{{ exercise.id }}</td>
                     <td>{{ exercise.tipid.nume }}</td>
-                    <td>{{ exercise.nume }}</td>
+                    <td><a href="{{ path("view_exercise", {'id': exercise.id}) }}">{{ exercise.nume }}</a></td>
                     <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
-                    <td><button class="btn btn-danger" onclick="confirmDelete('{{ path('delete_exercise', {'id': exercise.id }) }}')">Delete</button></td>
+                    <td data-controller="delete-exercise"> <!-- inainte-->
+
+                        <button class="btn btn-danger" data-action="click->delete-exercise#delete" data-exercise-id="{{ exercise.id }}">Delete</button>
+                    </td>
+                    <td>
+                        <a href="{{ path('edit_exercise', {'id': exercise.id }) }}" class="btn btn-primary">Edit</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <button  class="btn btn-success" onclick="window.location.href='{{ path('new_exercise') }}'">New exercise</button>
     </div>
 
     <script>
-        function confirmDelete(deleteUrl) {
+        function confirmDelete(exerciseId) {
             if (confirm('Are you sure you want to delete this exercise?')) {
-                window.location.href = deleteUrl;
+                document.getElementById('delete-form-' + exerciseId).submit();
             }
         }
     </script>

@@ -1,0 +1,29 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Exercise{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Exercise {{ exercise.id }}</h1>
+
+        {{ form_start(form, {'action': path('update_exercise', {'id': exercise.id}), 'method': 'PATCH'}) }}
+        <div class="form-group">
+            {{ form_label(form.nume) }}
+            {{ form_widget(form.nume, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nume) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.link_video) }}
+            {{ form_widget(form.link_video, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.link_video) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.tip) }}
+            {{ form_widget(form.tip, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.tip) }}
+        </div>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

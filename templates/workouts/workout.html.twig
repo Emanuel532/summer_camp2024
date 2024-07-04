@@ -1,0 +1,30 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Workout Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center bg-dark text-white">
+                        <h2>Workout Details</h2>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-center">{{ workout.nume }}</h4>
+                        <p class="card-text text-center"><strong>Tip:</strong> {{ workout.tipId.nume }}</p>
+                        <p class="card-text text-center"><strong>Date:</strong>                     {% if  workout.date is not null %}
+                                {{  workout.date|date('Y-m-d') }}
+
+                            {% endif %}</p>
+                        <p class="card-text text-center"><strong>User:</strong> {{ workout.user.nume }}</p>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{ path('workouts_index') }}" class="btn btn-primary">Back to Workouts</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

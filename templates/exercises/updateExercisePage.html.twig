@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Exercise</h1>
+    </div>
+    {{ form_start(form, {'action': path('update_exercise', {'id': exercise.id}), 'method': 'PATCH' }) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block title %}
+    Edit Exercise {{ exercise.id }}
+{% endblock %}

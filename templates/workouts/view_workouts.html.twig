@@ -1,0 +1,47 @@
+{# templates/workout/view_workouts.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}View Workouts{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Workouts</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Tip</th>
+                <th>Date</th>
+                <th>User</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for workout in workouts %}
+                <tr>
+                    <td>{{ workout.id }}</td>
+                    <td><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }}</a></td>
+                    <td>{{ workout.tipId.nume }}</td>
+                    {% if  workout.date is not null %}
+                        <td>{{  workout.date|date('Y-m-d') }}</td>
+                        {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td>{{ workout.user.nume }}</td>
+                    <td>
+                        <form id="delete-form-{{ workout.id }}" action="{{ path('workouts_delete', {'id': workout.id}) }}" method="post" style="display: inline-block;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ workout.id) }}">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this workout?')">Delete</button>
+                        </form>
+                        <a href="{{ path('workouts_edit', {'id': workout.id}) }}" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('workouts_new') }}" class="btn btn-success">New Workout</a>
+    </div>
+{% endblock %}
