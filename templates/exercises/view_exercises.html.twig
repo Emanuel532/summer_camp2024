@@ -25,7 +25,6 @@
                     <td><a href="{{ path("view_exercise", {'id': exercise.id}) }}">{{ exercise.nume }}</a></td>
                     <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
                     <td data-controller="delete-exercise"> <!-- inainte-->
-
                         <button class="btn btn-danger" data-action="click->delete-exercise#delete" data-exercise-id="{{ exercise.id }}">Delete</button>
                     </td>
                     <td>

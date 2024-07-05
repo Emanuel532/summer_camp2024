@@ -30,7 +30,7 @@
                 <div class="form-group mb-3">
                     {{ form_label(form.gender, 'Gender', {'label_attr': {'class': 'col-form-label'}}) }}
                     {{ form_widget(form.gender, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.gender) }}
+                    {{ form_errors(form.gender, {'attr': {'class': 'form-control'}}) }}
                 </div>
                 <div class="form-group mb-3">
                     {{ form_label(form.parola, 'Parola', {'label_attr': {'class': 'col-form-label'}}) }}

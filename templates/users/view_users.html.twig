@@ -32,9 +32,10 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td>
+                    <td data-controller="delete-user"> <!-- inainte-->
                         <a href="{{ path('update_user', {'id': user.id}) }}" class="btn btn-primary">Edit</a>
-                        <a href="{{ path('delete_user', {'id': user.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+
+                        <button class="btn btn-danger" data-action="click->delete-user#delete" data-user-id="{{ user.id }}">Delete</button>
                     </td>
                 </tr>
             {% endfor %}

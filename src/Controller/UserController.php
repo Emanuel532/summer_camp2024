@@ -11,6 +11,7 @@ use App\Repository\ExercitiiRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -56,13 +57,25 @@ class UserController extends AbstractController
         return $this->render('users/addUserPage.html.twig', ['form' => $form]);
     }
 
-    #[Route('/users/delete/{id}', name: 'delete_user')]
+    #[Route('/users/{id}', name: 'delete_user', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function deleteUser($id, UserRepository $userRepository): Response
     {
         $deletedRows = $userRepository->deleteUser($id);
         $status = $deletedRows > 0 ? 'success' : 'failure';
 
-        return $this->render('users/delete_exercise.html.twig', ["user_id" => $id, 'status' => $status]);
+        return new JsonResponse(['status' => $status, 'user_id' => $id]);
+    }
+
+    #[Route('/delete_user', name: 'delete_user_status', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function deleteExerciseStatus(Request $request): Response
+    {
+        $userId = $request->query->get('user_id');
+        $status = $request->query->get('status');
+
+        return $this->render('users/delete_user.html.twig', [
+            'user_id' => $userId,
+            'status' => $status
+        ]);
     }
 
     #[Route('/users/{id}/update', name: 'update_user', methods: ['GET', "POST"])]
