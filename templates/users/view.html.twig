@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>User Details</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">ID:</div>
+                    <div class="col-sm-9">{{ user.id }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">Name:</div>
+                    <div class="col-sm-9">{{ user.nume }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">Email:</div>
+                    <div class="col-sm-9">{{ user.mail }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">Birthday:</div>
+                    <div class="col-sm-9">{{ user.birthday|date('Y-m-d') }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">Gender:</div>
+                    <div class="col-sm-9">{{ user.gender }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3 font-weight-bold">Workouts:</div>
+                    <div class="col-sm-9">
+                        {% if user.workouts is empty %}
+                            <p>No workouts available.</p>
+                        {% else %}
+                            <ul>
+                                {% for workout in user.workouts %}
+                                    <li>{{ workout.nume }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('users') }}" class="btn btn-primary">Back to Users List</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -21,7 +21,7 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td>{{ user.nume }}</td>
+                    <td><a href="{{ path('view_user', {'id': user.id}) }}">{{ user.nume }}</a></td>
                     <td>{{ user.mail }}</td>
                     <td>{{ user.birthday ? user.birthday|date('Y-m-d') : 'N/A' }}</td>
                     <td>{{ user.gender }}</td>
@@ -40,5 +40,6 @@
             {% endfor %}
             </tbody>
         </table>
+        <a href="{{ path('create_new_user') }}" class="btn btn-success">New User</a>
     </div>
 {% endblock %}

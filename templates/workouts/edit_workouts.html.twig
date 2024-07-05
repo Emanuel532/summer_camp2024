@@ -3,11 +3,35 @@
 {% block title %}Edit Workout{% endblock %}
 
 {% block body %}
-    <h1>Edit Workout</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Workout</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.nume) }}
+            {{ form_widget(form.nume, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nume) }}
+        </div>
 
-    <button type="submit" class="btn btn-primary">Save changes</button>
-    {{ form_end(form) }}
+        <div class="form-group">
+            {{ form_label(form.users) }}
+            {{ form_widget(form.users, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.users) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.date) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.tip) }}
+            {{ form_widget(form.tip, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.tip) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

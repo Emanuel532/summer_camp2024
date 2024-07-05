@@ -17,11 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user')]
-    public function index(): Response
-    {
-        return $this->render('user/index.html.twig');
-    }
 
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function viewAllUsers(UserRepository $userRepository): Response {
@@ -31,7 +26,15 @@ class UserController extends AbstractController
         return $this->render('users/view_users.html.twig', ['users' => $users]);
     }
 
-    #[Route('/users/new', name: 'new_user', methods: ['GET', "POST"])]
+    #[Route('/users/{id}', name: 'view_user', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function view(User $user): Response
+    {
+        return $this->render('users/view.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    #[Route('/users/new', name: 'create_new_user', methods: ['GET', "POST"])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -46,6 +49,7 @@ class UserController extends AbstractController
             $user = $form->getData();
             $entityManager->persist($user);
             $entityManager->flush();
+            return $this->redirectToRoute('view_user', ['id' => $user->getId()]);
         }
 
 
@@ -65,7 +69,7 @@ class UserController extends AbstractController
     public function update(User $user, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
 
-        $form = $this->createForm(UserUpdateType::class, $user, ['action' => 'update_user']);
+        $form = $this->createForm(UserUpdateType::class, $user);
 
 
 
@@ -75,10 +79,11 @@ class UserController extends AbstractController
             $user = $form->getData();
             $entityManager->flush();
 
-            return $this->render('users/updateStatusPage.html.twig', ['status' => 'successful']);
+            return $this->redirectToRoute('users/updateStatusPage.html.twig', ['status' => 'successful']);
         }
 
 
         return $this->render('users/updateUserPage.html.twig', ['form' => $form]);
     }
+
 }

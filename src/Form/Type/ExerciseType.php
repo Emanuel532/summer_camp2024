@@ -23,8 +23,6 @@ class ExerciseType extends AbstractType
         //dd($options['data']);
         $tipuri= [];
         foreach ($options['data'] as $tip ) {
-            $tipuri_id[] = $tip->getId();
-            $tipuri_nume[] = $tip->getNume();
             $tipuri[$tip->getNume()] = $tip->getId();
         }
 
@@ -33,8 +31,7 @@ class ExerciseType extends AbstractType
         $builder
             ->add('nume', TextType::class)
             ->add('link_video', TextType::class)
-            ->add('tip', ChoiceType::class, ['choices' => $tipuri ])
-            ->add('submit', SubmitType::class);
+            ->add('tip', ChoiceType::class, ['choices' => $tipuri ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

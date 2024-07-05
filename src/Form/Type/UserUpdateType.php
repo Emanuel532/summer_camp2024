@@ -21,8 +21,10 @@ class UserUpdateType extends AbstractType
             ->add('nume', TextType::class )
             ->add('mail', TextType::class)
             ->add('birthday', BirthdayType::class)
-            ->add('gender', ChoiceType::class, ['choices' => ['Male' => 'male', 'Female' => 'female', 'Prefer not to say' => 'n']])
-            ->add('update', SubmitType::class);
+            ->add('gender', ChoiceType::class,
+                ['choices' =>
+                ['Male' => 'male', 'Female' => 'female', 'Prefer not to say' => 'n']]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

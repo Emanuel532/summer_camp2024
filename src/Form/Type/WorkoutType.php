@@ -27,8 +27,7 @@ public function buildForm(FormBuilderInterface $builder, array $options)
         ->add('nume', TextType::class)
         ->add('users', ChoiceType::class, ['choices' => $users])
         ->add('date', DateType::class)
-        ->add('tip', ChoiceType::class, ['choices' => $tipuri ])
-        ->add('submit', SubmitType::class);
+        ->add('tip', ChoiceType::class, ['choices' => $tipuri ]);
 
 }
 
