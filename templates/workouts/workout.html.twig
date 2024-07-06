@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Workout Details{% endblock %}
@@ -19,6 +18,28 @@
 
                             {% endif %}</p>
                         <p class="card-text text-center"><strong>User:</strong> {{ workout.user.nume }}</p>
+
+                        {% for exerciseLog in exerciseLogs %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-heading{{ exerciseLog.exercise.id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ exerciseLog.exercise.id }}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">&emsp;{{ exerciseLog.exercise.nume}}
+                                    </button>
+                                </h2>
+                                <div id="flush-collapse{{ exerciseLog.exercise.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ exerciseLog.exercise.id }}" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        Number of reps: {{ exerciseLog.nrReps }}</br>
+                                        Duration: {{ exerciseLog.duration }} seconds</br>
+                                        Video Instructions:<br>
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                            <iframe class="embed-responsive-item" src="{{ exerciseLog.exercise.linkVideo }}" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        </div>
                     </div>
                 </div>
                 <div class="text-center mt-4">
