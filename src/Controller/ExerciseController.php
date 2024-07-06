@@ -162,10 +162,7 @@ class ExerciseController extends AbstractController
                 $entityManager->persist($exercise);
                 $entityManager->flush();
 
-                return $this->render('exercises/updateExercisePage.html.twig', [
-                    'form' => $form->createView(),
-                    'exercise' => $exercise,
-                ]);
+                return $this->redirectToRoute('view_exercise', ['id'=>$exercise->getId()]);
             }
 
             return new Response();

@@ -6,6 +6,7 @@ use App\Entity\ExerciseLog;
 use App\Entity\Workout;
 use App\Form\Type\ExerciseUpdateType;
 use App\Form\Type\WorkoutType;
+use App\Repository\ExerciseLogRepository;
 use App\Repository\ExercitiiRepository;
 use App\Repository\TipRepository;
 use App\Repository\UserRepository;
@@ -38,7 +39,6 @@ class WorkoutController extends AbstractController
             $arrayValori[$key] = $value;
         }
 
-        $workout_id_to_redirect = -1;
         if($arrayValori != [])
         if ($arrayValori['nume'] != null and $arrayValori['user'] != null) { //request validation
             //to create a new workoutf
@@ -82,10 +82,13 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/workouts/{id}', name: 'workouts_show', methods: ['GET'])]
-    public function show(Workout $workout): Response
+    public function show(Workout $workout, ExerciseLogRepository $exerciseLogRepository): Response
     {
+        $exerciseLogs = $exerciseLogRepository->findAllExerciseLogs($workout->getId());
+
         return $this->render('workouts/workout.html.twig', [
             'workout' => $workout,
+            'exerciseLogs' => $exerciseLogs,
         ]);
     }
 
