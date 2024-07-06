@@ -79,7 +79,7 @@ class UserController extends AbstractController
             $user = $form->getData();
             $entityManager->flush();
 
-            return $this->redirectToRoute('users/updateStatusPage.html.twig', ['status' => 'successful']);
+            return $this->redirectToRoute('view_user', ['id' => $user->getId()]);
         }
 
 

@@ -17,8 +17,6 @@ class ExerciseLog
     #[ORM\Column]
     private ?int $nr_reps = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,6 +25,9 @@ class ExerciseLog
     #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercitii $exercise = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $duration = null;
 
     public function getId(): ?int
     {
@@ -45,17 +46,7 @@ class ExerciseLog
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
-    {
-        return $this->duration;
-    }
 
-    public function setDuration(?\DateTimeInterface $duration): static
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
 
     public function getWorkout(): ?Workout
     {
@@ -77,6 +68,18 @@ class ExerciseLog
     public function setExercise(?Exercitii $exercise): static
     {
         $this->exercise = $exercise;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }

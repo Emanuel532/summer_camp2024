@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\ExerciseLog;
 use App\Entity\Workout;
 use App\Form\Type\ExerciseUpdateType;
 use App\Form\Type\WorkoutType;
+use App\Repository\ExercitiiRepository;
 use App\Repository\TipRepository;
 use App\Repository\UserRepository;
 use App\Repository\WorkoutRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,36 +30,55 @@ class WorkoutController extends AbstractController
         ]);
     }
 
-    #[Route('/workouts/new', name: 'workouts_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, TipRepository $tipRepository, UserRepository $userRepository): Response
+    #[Route('/workouts/new', name: 'workouts_new')]
+    public function new(Request $request, UserRepository $userRepository, TipRepository $tipRepository,ExercitiiRepository $exercitiiRepository, EntityManagerInterface $entityManager): Response
     {
-        $workout = new Workout();
-        $tipValues = $tipRepository->findAll();
-        $users = $userRepository->findAll();
+        $arrayValori = [];
+        foreach ($request->getPayload() as $key => $value) {
+            $arrayValori[$key] = $value;
+        }
 
-        $form = $this->createForm(WorkoutType::class, $workout, [
-            'tipuri' => $tipValues,
-            'users' => $users,
-        ]);
+        $workout_id_to_redirect = -1;
+        if($arrayValori != [])
+        if ($arrayValori['nume'] != null and $arrayValori['user'] != null) { //request validation
+            //to create a new workoutf
 
-        $form->handleRequest($request);
+            $workout = new Workout();
+            $workout->setNume($arrayValori['nume']);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $userRepository->find($arrayValori['user']);
+            $workout->setUser($user);
 
-            $tip_selectat = $tipRepository->find($workout['tip']);
-            $user_selectat = $userRepository->find($workout['users']);
 
-            $workout->setTipId($tip_selectat);
-            $workout->setUser($user_selectat);
+            $date = DateTime::createFromFormat('Y-m-d', $arrayValori['date']);
+            $workout->setDate($date);
+
+            $tip = $tipRepository->find(3);
+
+            $workout->setTipId($tip);
             $entityManager->persist($workout);
             $entityManager->flush();
 
-            return $this->redirectToRoute('workouts_show', ['id' => $workout->getId()]);
-        }
 
-        return $this->render('workouts/new_workout.html.twig', [
-            'form' => $form,
-        ]);
+            for($i = 0; $i < count($arrayValori['exercise_id']); $i++) {
+                $exerciseLog = new ExerciseLog();
+
+                $exercitiu = $exercitiiRepository->find($arrayValori['exercise_id'][$i]);
+                $exerciseLog->setExercise($exercitiu);
+
+                $exerciseLog->setWorkout($workout);
+                $exerciseLog->setNrReps($arrayValori['nr_reps'][$i]);
+
+
+                $exerciseLog->setDuration($arrayValori['duration'][$i]);
+                $entityManager->persist($exerciseLog);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('workouts_show', ['id' => $workout->getId()], Response::HTTP_SEE_OTHER);
+        }
+        return $this->render('workouts/new.html.twig', ['exercitiiList' => $exercitiiRepository->findAll(),
+            'userList' => $userRepository->findAll(),
+            ]);
     }
 
     #[Route('/workouts/{id}', name: 'workouts_show', methods: ['GET'])]

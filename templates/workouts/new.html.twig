@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create New Workout{% endblock %}
+
+{% block body %}
+    <div class="container mt-4" data-controller="exercise-form">
+        <form method="post" action="{{ path('workouts_new') }}" id="workout_form">
+            <div>
+                <label for="nume">Nume:</label>
+                <input type="text" id="nume" name="nume" required>
+            </div>
+
+            <div>
+                <label for="user">User:</label>
+                <select id="user" name="user" required>
+                    <option value="">Select User</option>
+                    {% for user in userList %}
+                        <option value="{{ user.id }}">{{ user.nume }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div id="exercise_logs" data-exercise-form-target="exerciseLogs">
+                <div class="exercise-item" data-controller="exercise-form">
+                    <select name="exercise_id[]" required>
+                        <option value="">Select Exercise</option>
+                        {% for exercitii in exercitiiList %}
+                            <option value="{{ exercitii.id }}">{{ exercitii.nume }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="number" name="nr_reps[]" placeholder="Number of Reps" required>
+                    <input type="text" name="duration[]" placeholder="Duration" required>
+                </div>
+            </div>
+
+            <a href="#" data-action="click->exercise-form#addExercise">Add Exercise</a>
+            <a href="#" data-action="click->exercise-form#removeExercise">Remove last exercise</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        <template id="exercise-template" data-exercise-form-target="exerciseTemplate"> <!--template for stimulus -->
+            <div class="exercise-item" data-controller="exercise-form">
+                <select name="exercise_id[]" required>
+                    <option value="">Select Exercise</option>
+                    {% for exercitii in exercitiiList %}
+                        <option value="{{ exercitii.id }}">{{ exercitii.nume }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="nr_reps[]" placeholder="Number of Reps" required>
+                <input type="text" name="duration[]" placeholder="Duration" required>
+            </div>
+        </template>
+    </div>
+{% endblock %}
+
+

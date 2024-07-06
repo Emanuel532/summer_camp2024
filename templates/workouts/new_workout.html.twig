@@ -1,39 +1,35 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}New Workout{% endblock %}
-
+{% block title %}Create a new workout{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-4">New Workout</h1>
-
+        <h1>Create a new workout</h1>
         {{ form_start(form) }}
-        <div class="form-group">
+        <div>
             {{ form_label(form.nume) }}
-            {{ form_widget(form.nume, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.nume) }}
+            {{ form_widget(form.nume) }}
         </div>
-
-        <div class="form-group">
+        <div>
             {{ form_label(form.users) }}
-            {{ form_widget(form.users, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.users) }}
+            {{ form_widget(form.users) }}
         </div>
-
-        <div class="form-group">
+        <div>
             {{ form_label(form.date) }}
-            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.date) }}
+            {{ form_widget(form.date) }}
         </div>
-
-        <div class="form-group">
+        <div>
             {{ form_label(form.tip) }}
-            {{ form_widget(form.tip, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.tip) }}
+            {{ form_widget(form.tip) }}
         </div>
+        <div>
+            {{ form_label(form.exerciseLogs) }}
+            <div id="exercise-logs">
 
-        <button type="submit" class="btn btn-primary">Save</button>
+                {{ form_widget(form.exerciseLogs) }}
+            </div>
+        </div>
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}
