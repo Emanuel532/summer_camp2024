@@ -75,6 +75,7 @@ class ExerciseController extends AbstractController
 
         $form = $this->createForm(ExerciseType::class, $exercise, [
             'data' => $tip_values,
+
         ]);
 
         $form->handleRequest($request);
@@ -132,31 +133,42 @@ class ExerciseController extends AbstractController
         return $this->render('exercises/updateExercisePage.html.twig', ['form' => $form, 'exercise' => $exercise]);
     }
 
-    #[Route('/exercises/{id}', name: 'update_exercise', methods: ['PATCH', 'PUT'])]
-    public function updateExercise(Request $request, EntityManagerInterface $entityManager, TipRepository $tipRepository): Response
+    #[Route('/exercises/{id}', name: 'update_exercise', methods: ['PATCH'])]
+    public function updateExercise(Exercitii $exercise,Request $request, EntityManagerInterface $entityManager,
+                                   TipRepository $tipRepository, ExercitiiRepository $exercitiiRepository): Response
     {
+        $exercise_id = $exercise->getId();
 
-        $exercise = new Exercitii();
         $tipValues = $tipRepository->findAll();
 
         $form = $this->createForm(ExerciseUpdateType::class, $exercise, [
             'tipuri' => $tipValues,
         ]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $entityManager->flush();
-                return $this->redirectToRoute('view_exercises');
-            } else {
-                dd('Form is not valid');
-            }
-        } else {
-           dd('nu se trimite formu');
+        $arrayValori = [];
+        foreach ($request->getPayload() as $key => $value) {
+            $arrayValori[$key] = $value;
         }
-        return $this->render('exercises/updateExercisePage.html.twig', [
-            'form' => $form->createView(),
-            'exercise' => $exercise,
-        ]);
-    }
+            $exerciseUpdate = $arrayValori['exercise_update'];
 
+
+            if ($exerciseUpdate['nume'] != null and $exerciseUpdate['link_video'] != null) { //request validation
+                $exercise = $exercitiiRepository->find($exercise_id);
+
+                $exercise->setNume($exerciseUpdate['nume']);
+                $exercise->setLinkVideo($exerciseUpdate['link_video']);
+
+                $tipToBeAdded = $tipRepository->find($exerciseUpdate['tip']);
+                $exercise->setTipId($tipToBeAdded);
+                $entityManager->persist($exercise);
+                $entityManager->flush();
+
+                return $this->render('exercises/updateExercisePage.html.twig', [
+                    'form' => $form->createView(),
+                    'exercise' => $exercise,
+                ]);
+            }
+
+            return new Response();
+
+    }
 }
