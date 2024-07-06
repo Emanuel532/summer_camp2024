@@ -21,12 +21,12 @@
 
                         {% for exerciseLog in exerciseLogs %}
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-heading{{ exerciseLog.exercise.id }}">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ exerciseLog.exercise.id }}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <h2 class="accordion-header" id="flush-heading{{ exerciseLog.id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ exerciseLog.id }}" aria-expanded="false" aria-controls="flush-collapseOne">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">&emsp;{{ exerciseLog.exercise.nume}}
                                     </button>
                                 </h2>
-                                <div id="flush-collapse{{ exerciseLog.exercise.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ exerciseLog.exercise.id }}" data-bs-parent="#accordionFlushExample">
+                                <div id="flush-collapse{{ exerciseLog.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ exerciseLog.id }}" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
                                         Number of reps: {{ exerciseLog.nrReps }}</br>
                                         Duration: {{ exerciseLog.duration }} seconds</br>

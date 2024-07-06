@@ -93,30 +93,17 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/workouts/{id}/edit', name: 'workouts_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Workout $workout, EntityManagerInterface $entityManager, TipRepository $tipRepository, UserRepository $userRepository): Response
+    public function edit(Request $request, Workout $workout, EntityManagerInterface $entityManager, ExercitiiRepository $exercitiiRepository,TipRepository $tipRepository, UserRepository $userRepository): Response
     {
-        $tipValues = $tipRepository->findAll();
+
         $users = $userRepository->findAll();
+        $exercises = $exercitiiRepository->findAll();
 
-        $form = $this->createForm(WorkoutType::class, $workout
-            , [
-                'tipuri' => $tipValues,
-                'users' => $users,
-            ]);
-
-
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('workouts_show', ['id' => $workout->getId()]);
-        }
 
         return $this->render('workouts/edit_workouts.html.twig', [
             'workout' => $workout,
-            'form' => $form,
+            'userList'=> $users,
+            'exercitiiList' => $exercises,
         ]);
     }
 
