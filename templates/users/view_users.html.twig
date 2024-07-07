@@ -3,8 +3,17 @@
 {% block title %}View Users{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container mt-5" data-controller="pagination">
         <h1 class="mb-4">Users</h1>
+        <div class="mb-3">
+            <label for="rowsPerPageSelect" class="form-label">Users per page:</label>
+            <select id="rowsPerPageSelect" class="form-select w-auto" data-pagination-target="perPageSelect" data-action="change->pagination#changeRowsPerPage">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </div>
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
@@ -17,7 +26,7 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody data-pagination-target="tableBody">
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
@@ -32,15 +41,17 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    <td data-controller="delete-user"> <!-- inainte-->
+                    <td data-controller="delete-user">
                         <a href="{{ path('update_user', {'id': user.id}) }}" class="btn btn-primary">Edit</a>
-
                         <button class="btn btn-danger" data-action="click->delete-user#delete" data-user-id="{{ user.id }}">Delete</button>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <nav>
+            <ul class="pagination justify-content-center" data-pagination-target="pagination"></ul>
+        </nav>
         <a href="{{ path('create_new_user') }}" class="btn btn-success">New User</a>
     </div>
 {% endblock %}
