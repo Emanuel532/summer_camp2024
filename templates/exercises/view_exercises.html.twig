@@ -1,12 +1,20 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}View Exercises{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div data-controller="pagination" class="container mt-5">
         <h1 class="mb-4">Exercises</h1>
-        <table class="table table-striped table-bordered">
+        <div class="mb-3">
+            <label for="rowsPerPageSelect" class="form-label">Exercises per page:</label>
+            <select id="rowsPerPageSelect" class="form-select w-auto" data-target="pagination.perPageSelect" data-action="change->pagination#changeRowsPerPage">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <table class="table table-striped table-bordered" id="exerciseTable">
             <thead class="thead-dark">
             <tr>
                 <th>ID</th>
@@ -17,14 +25,14 @@
                 <th>Edit</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody data-target="pagination.tableBody" id="exerciseTableBody">
             {% for exercise in exercises %}
                 <tr>
                     <td>{{ exercise.id }}</td>
                     <td>{{ exercise.tipid.nume }}</td>
                     <td><a href="{{ path("view_exercise", {'id': exercise.id}) }}">{{ exercise.nume }}</a></td>
                     <td><a href="{{ exercise.LinkVideo }}">{{ exercise.LinkVideo }}</a></td>
-                    <td data-controller="delete-exercise"> <!-- inainte-->
+                    <td data-controller="delete-exercise">
                         <button class="btn btn-danger" data-action="click->delete-exercise#delete" data-exercise-id="{{ exercise.id }}">Delete</button>
                     </td>
                     <td>
@@ -34,15 +42,9 @@
             {% endfor %}
             </tbody>
         </table>
-        <button  class="btn btn-success" onclick="window.location.href='{{ path('new_exercise') }}'">New exercise</button>
+        <nav>
+            <ul data-target="pagination.pagination" class="pagination justify-content-center" id="pagination"></ul>
+        </nav>
+        <button class="btn btn-success" onclick="window.location.href='{{ path('new_exercise') }}'">New exercise</button>
     </div>
-
-    <script>
-        function confirmDelete(exerciseId) {
-            if (confirm('Are you sure you want to delete this exercise?')) {
-                document.getElementById('delete-form-' + exerciseId).submit();
-            }
-        }
-    </script>
 {% endblock %}
-
