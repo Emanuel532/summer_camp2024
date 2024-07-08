@@ -16,6 +16,18 @@ class WorkoutRepository extends ServiceEntityRepository
         parent::__construct($registry, Workout::class);
     }
 
+    public function findNameBySearchQuery(string $search_parameters): array
+    {
+        $querry = $this->createQueryBuilder('w');
+
+        if ($search_parameters) {
+            $querry->andWhere('w.nume LIKE :search')
+                ->setParameter('search', '%' . $search_parameters . '%');
+        }
+
+        return $querry->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Workout[] Returns an array of Workout objects
     //     */

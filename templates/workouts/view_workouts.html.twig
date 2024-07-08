@@ -7,6 +7,12 @@
 {% block body %}
     <div class="container mt-5" data-controller="pagination">
         <h1 class="mb-4">Workouts</h1>
+        <form method="get" action="{{ path('workouts_index') }}" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Filter by name" value="{{ app.request.query.get('search') }}">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
         <div class="mb-3">
             <label for="rowsPerPageSelect" class="form-label">Workouts per page:</label>
             <select id="rowsPerPageSelect" class="form-select w-auto" data-pagination-target="perPageSelect" data-action="change->pagination#changeRowsPerPage">
