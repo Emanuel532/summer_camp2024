@@ -17,10 +17,7 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3)
-     */
+
     #[ORM\Column(length: 255)]
     private ?string $nume = null;
 

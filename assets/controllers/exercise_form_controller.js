@@ -1,11 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['exerciseLogs', 'exerciseTemplate'];
+  static targets = ['exerciseLogs', 'exerciseTemplate', 'removeButtonExerciseTemplate'];
   index = 0;
 
   connect() {
     console.log('Controller connected!');
+
+    const buttonsContainer = document.getElementById('locButoane');
+    const buton = document.getElementById("divExercises");
+    if(buton!=null) {
+      console.log("SE EXECUTA");
+      const remove_button = this.removeButtonExerciseTemplateTarget.innerHTML;
+
+      buttonsContainer.insertAdjacentHTML('beforeend', remove_button);
+    }
   }
 
   addExercise(event) {
@@ -13,6 +22,14 @@ export default class extends Controller {
     this.index++;
     const content = this.exerciseTemplateTarget.innerHTML.replace(/__index__/g, this.index);
     this.exerciseLogsTarget.insertAdjacentHTML('beforeend', content);
+
+    const buton = document.getElementById("remove-button-exercise");
+    if(buton==null) {
+      const buttonsContainer = document.getElementById('locButoane');
+      const remove_button = this.removeButtonExerciseTemplateTarget.innerHTML;
+
+      buttonsContainer.insertAdjacentHTML('beforeend', remove_button);
+    }
   }
  removeExercise(event) {
     event.preventDefault();
@@ -23,6 +40,11 @@ export default class extends Controller {
 
       if (lastExerciseItem) {
         lastExerciseItem.remove();
+        const lastExerciseItem2 = exerciseLogsContainer.querySelector('.exercise-item:last-of-type');
+        if(lastExerciseItem2 == null) { //delete the remove exercise button
+          event['target'].remove();
+
+        }
       }
     }
   }

@@ -29,7 +29,7 @@
 
                 <div class="exercise-item mb-3 row" data-controller="exercise-form">
                     <hr class="bg-danger border-2 border-top border-danger" />
-                    <div class="col-md-4">
+                    <div id="divExercises" class="col-md-4">
                         <select name="exercise_id[]" class="form-select" required>
                             <option value="{{ log.exercise.id }}">{{ log.exercise.nume }}</option>
                             {% for exercitii in exercitiiList %}
@@ -47,12 +47,16 @@
 
             {% endfor %}
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="locButoane">
                 <a href="#" class="btn btn-outline-secondary me-2" data-action="click->exercise-form#addExercise">Add Exercise</a>
-                <a href="#" class="btn btn-danger" data-action="click->exercise-form#removeExercise">Remove last exercise</a>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
+
+        <template id="remove-button-exercise-template" data-exercise-form-target="removeButtonExerciseTemplate">
+            <a href="#" id="remove-button-exercise" class="btn btn-danger" data-action="click->exercise-form#removeExercise">Remove last exercise</a>
+        </template>
+
         <template id="exercise-template" data-exercise-form-target="exerciseTemplate">
             <div class="exercise-item mb-3 row" data-controller="exercise-form">
                 <hr class="bg-danger border-2 border-top border-danger" />

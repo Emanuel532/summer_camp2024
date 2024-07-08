@@ -20,12 +20,7 @@ class UserType extends AbstractType
     {
 
         $builder
-            ->add('nume', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 3]),
-                ],
-            ])
+            ->add('nume', TextType::class)
             ->add('mail', EmailType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
