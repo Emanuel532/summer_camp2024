@@ -33,6 +33,9 @@ class UserController extends AbstractController
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function viewAllUsers(UserRepository $userRepository): Response {
 
+
+
+        dd($this->getUser()->getRoles());
         $users = $userRepository->findAll();
 
         return $this->render('users/view_users.html.twig', ['users' => $users]);
@@ -95,7 +98,6 @@ class UserController extends AbstractController
     #[Route('/users/{id}/update', name: 'update_user', methods: ['GET', "POST"])]
     public function update(User $user, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-
 
         $form = $this->createForm(UserUpdateType::class, $user);
 

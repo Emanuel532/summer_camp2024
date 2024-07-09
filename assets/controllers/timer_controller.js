@@ -1,36 +1,52 @@
-
 import { Controller } from "@hotwired/stimulus";
-import $ from '../jsLibs/jquery-3.7.1.min.js';
+import Swal from 'sweetalert2';
 
 export default class extends Controller {
+  connect() {
+    console.log('Timer controller conectat');
+  }
+
   startTimer(event) {
-    const duration = event.currentTarget.dataset.duration;
-    let timeLeft = parseInt(duration);
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+    console.log('event: ', event);
+    const duration = parseInt(event.currentTarget.dataset.duration);
+    const exerciseName = event.currentTarget.dataset.name;
+    const exerciseId = event.currentTarget.dataset.exercise_id;
+    const checkbox = document.getElementById(`check${exerciseId}${duration}`);
 
-    const dialogHtml = `
-            <div id="timer-dialog" title="Exercise Timer">
-                <p>Time remaining: <span id="timer-countdown">${minutes}:${seconds.toString().padStart(2, '0')}</span></p>
-            </div>
-        `;
-    $('body').append(dialogHtml);
-    $('#timer-dialog').dialog();
+    let timeLeft = duration;
+    let timerInterval;
+    const successSound = document.getElementById('success-sound');
 
-    const intervalId = setInterval(() => {
-      timeLeft--;
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-      $('#timer-countdown').text(`${minutes}:${seconds.toString().padStart(2, '0')}`);
 
-      if (timeLeft <= 0) {
-        clearInterval(intervalId);
-        $('#timer-dialog').html('<p>Time is up! You are done with this exercise.</p>');
-        setTimeout(() => {
-          $('#timer-dialog').dialog('close');
-          $('#timer-dialog').remove();
-        }, 3000);
+
+    Swal.fire({
+      title: 'Exercise Timer\n' + exerciseName,
+      html: `Time remaining: <strong id="timer-countdown">${timeLeft}</strong> seconds`,
+      timer: duration * 1000,
+      timerProgressBar: true,
+      willOpen: () => {
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          const countdownElement = Swal.getHtmlContainer().querySelector('#timer-countdown');
+          if (countdownElement) {
+            countdownElement.textContent = timeLeft;
+          }
+        }, 1000);
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
       }
-    }, 1000);
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        successSound.play();
+        checkbox.checked = true;
+        Swal.fire({
+          title: 'Time is up!',
+          text: 'You are done with this exercise.',
+          icon: 'success'
+        });
+      }
+    });
   }
 }

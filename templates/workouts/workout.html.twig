@@ -2,7 +2,9 @@
 
 {% block title %}Workout Details{% endblock %}
 
+
 {% block body %}
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -23,20 +25,23 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-heading{{ exerciseLog.id }}">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ exerciseLog.id }}" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">&emsp;{{ exerciseLog.exercise.nume}}
+                                        <input class="form-check-input"  disabled="true" type="checkbox" value="" id="check{{exerciseLog.exercise.id}}{{ exerciseLog.duration }}">&emsp;{{ exerciseLog.exercise.nume}}
                                     </button>
                                 </h2>
                                 <div id="flush-collapse{{ exerciseLog.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ exerciseLog.id }}" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        Number of reps: {{ exerciseLog.nrReps }}<br>
-                                        Duration: {{ exerciseLog.duration }} seconds<br>
+                                    <div class="accordion-body" data-controller="timer">
+                                        Number of reps: {{ exerciseLog.nrReps }}</br>
+                                        Duration: {{ exerciseLog.duration }} seconds</br>
                                         Video Instructions:<br>
                                         <div class="embed-responsive embed-responsive-16by9">
                                             <iframe class="embed-responsive-item" src="{{ exerciseLog.exercise.linkVideo }}" allowfullscreen></iframe>
                                         </div>
-                                        <button class="btn btn-primary mt-3" data-action="click->timer#startTimer" data-duration="{{ exerciseLog.duration }}">Start Timer</button>
+                                        <button class="btn btn-primary mt-3" data-action="click->timer#startTimer" data-exercise_id="{{ exerciseLog.exercise.id }}" data-duration="{{ exerciseLog.duration }}" data-name="{{ exerciseLog.exercise.nume }}">Start Timer</button>
+                                        <audio id="success-sound" src="{{ asset('sound/times_up.wav') }}"></audio>
                                     </div>
                                 </div>
+
+
                             </div>
                         {% endfor %}
 
