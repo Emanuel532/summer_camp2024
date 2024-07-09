@@ -13,9 +13,9 @@
             <div class="mb-3">
                 <label for="user" class="form-label">User:</label>
                 <select id="user" name="user" class="form-select" required>
-                    <option value="{{ workout.user.id }}">{{ workout.user.nume }}</option>
+                    <option value="{{ workout.user.id }}">{{ workout.user.userAccount.nume }}</option>
                     {% for user in userList %}
-                        <option value="{{ user.id }}">{{ user.nume }}</option>
+                        <option value="{{ user.id }}">{{ user.userAccount.nume }}</option>
                     {% endfor %}
                 </select>
             </div>

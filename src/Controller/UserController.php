@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\Type\UserType;
 use App\Form\Type\UserUpdateType;
 use App\Repository\ExercitiiRepository;
+use App\Repository\UserAccountRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
+    #[Route('/your-profile', name: 'your-profile', methods: ['GET'])]
+    public function viewYourAccount(UserRepository $userRepository): Response
+    {
+        //get your current connected user
+        if ($this->getUser() != null) {
+            return $this->redirectToRoute('view_user', ['id' => $this->getUser()->getUserId()->getId()]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
 
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function viewAllUsers(UserRepository $userRepository): Response {
@@ -58,8 +69,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}', name: 'delete_user', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function deleteUser($id, UserRepository $userRepository): Response
+    public function deleteUser($id, UserRepository $userRepository, UserAccountRepository $userAccountRepository): Response
     {
+        $user = $userRepository->find($id);
+        $account_id = $user->getUserAccount()->getId();
+        $userAccountRepository->deleteUser($account_id);
         $deletedRows = $userRepository->deleteUser($id);
         $status = $deletedRows > 0 ? 'success' : 'failure';
 
@@ -81,6 +95,7 @@ class UserController extends AbstractController
     #[Route('/users/{id}/update', name: 'update_user', methods: ['GET', "POST"])]
     public function update(User $user, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
+
 
         $form = $this->createForm(UserUpdateType::class, $user);
 

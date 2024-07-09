@@ -17,7 +17,7 @@
                                 {{  workout.date|date('Y-m-d') }}
 
                             {% endif %}</p>
-                        <p class="card-text text-center"><strong>User:</strong> {{ workout.user.nume }}</p>
+                        <p class="card-text text-center"><strong>User:</strong> {{ workout.user.userAccount.nume }}</p>
 
                         {% for exerciseLog in exerciseLogs %}
                             <div class="accordion-item">
@@ -28,12 +28,13 @@
                                 </h2>
                                 <div id="flush-collapse{{ exerciseLog.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ exerciseLog.id }}" data-bs-parent="#accordionFlushExample">
                                     <div class="accordion-body">
-                                        Number of reps: {{ exerciseLog.nrReps }}</br>
-                                        Duration: {{ exerciseLog.duration }} seconds</br>
+                                        Number of reps: {{ exerciseLog.nrReps }}<br>
+                                        Duration: {{ exerciseLog.duration }} seconds<br>
                                         Video Instructions:<br>
                                         <div class="embed-responsive embed-responsive-16by9">
                                             <iframe class="embed-responsive-item" src="{{ exerciseLog.exercise.linkVideo }}" allowfullscreen></iframe>
                                         </div>
+                                        <button class="btn btn-primary mt-3" data-action="click->timer#startTimer" data-duration="{{ exerciseLog.duration }}">Start Timer</button>
                                     </div>
                                 </div>
                             </div>

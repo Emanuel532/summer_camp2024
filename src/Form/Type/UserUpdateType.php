@@ -18,8 +18,6 @@ class UserUpdateType extends AbstractType
     {
 
         $builder
-            ->add('nume', TextType::class )
-            ->add('mail', TextType::class)
             ->add('birthday', BirthdayType::class)
             ->add('gender', ChoiceType::class,
                 ['choices' =>

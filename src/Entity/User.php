@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserAccountRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,15 +19,6 @@ class User
     private ?int $id = null;
 
 
-    #[ORM\Column(length: 255)]
-    private ?string $nume = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $mail = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $parola = null;
-
 
     /**
      * @var Collection<int, Workout>
@@ -40,6 +32,10 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $gender = null;
 
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserAccount $userAccount = null;
+
 
 
 
@@ -52,43 +48,6 @@ class User
     {
         return $this->id;
     }
-
-    public function getNume(): ?string
-    {
-        return $this->nume;
-    }
-
-    public function setNume(string $nume): static
-    {
-        $this->nume = $nume;
-
-        return $this;
-    }
-
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): static
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getParola(): ?string
-    {
-        return $this->parola;
-    }
-
-    public function setParola(string $parola): static
-    {
-        $this->parola = $parola;
-
-        return $this;
-    }
-
 
 
 
@@ -113,7 +72,6 @@ class User
     public function removeWorkout(Workout $workout): static
     {
         if ($this->workouts->removeElement($workout)) {
-            // set the owning side to null (unless already changed)
             if ($workout->getUser() === $this) {
                 $workout->setUser(null);
             }
@@ -142,6 +100,18 @@ class User
     public function setGender(?string $gender): static
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getUserAccount(): ?UserAccount
+    {
+        return $this->userAccount;
+    }
+
+    public function setUserAccount(UserAccount $userAccount): static
+    {
+        $this->userAccount = $userAccount;
 
         return $this;
     }

@@ -38,7 +38,7 @@
                     <td><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }}</a></td>
                     <td>{{ workout.tipId.nume }}</td>
                     <td>{{ workout.date ? workout.date|date('Y-m-d') : '' }}</td>
-                    <td>{{ workout.user.nume }}</td>
+                    <td>{{ workout.nume }}</td>
                     <td>
                         <form id="delete-form-{{ workout.id }}" action="{{ path('workouts_delete', {'id': workout.id}) }}" method="post" style="display: inline-block;">
                             <input type="hidden" name="_method" value="DELETE">

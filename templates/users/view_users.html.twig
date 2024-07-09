@@ -19,7 +19,6 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Birthday</th>
                 <th>Gender</th>
                 <th>Workouts</th>
@@ -30,14 +29,13 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td><a href="{{ path('view_user', {'id': user.id}) }}">{{ user.nume }}</a></td>
-                    <td>{{ user.mail }}</td>
+                    <td><a href="{{ path('view_user', {'id': user.id}) }}">{{ user.userAccount.nume }}</a></td>
                     <td>{{ user.birthday ? user.birthday|date('Y-m-d') : 'N/A' }}</td>
-                    <td>{{ user.gender }}</td>
+                    <td>{{ user.gender}}</td>
                     <td>
                         <ul>
                             {% for workout in user.workouts %}
-                                <li>{{ workout.nume }} ({{ workout.date|date('Y-m-d') }})</li>
+                                <li><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }} ({{ workout.date|date('Y-m-d') }})</a></li>
                             {% endfor %}
                         </ul>
                     </td>
