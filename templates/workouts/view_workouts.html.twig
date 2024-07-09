@@ -3,7 +3,12 @@
 {% block title %}View Workouts{% endblock %}
 
 {% block body %}
+
     <div class="container mt-5" data-controller="pagination">
+        {% if not is_granted("IS_AUTHENTICATED") %}
+            <h1>You must be logged in to view this page.</h1>
+            <p><a href="{{ path('app_login') }}" >click here!</a></p>
+            {% else %}
         <h1 class="mb-4">Workouts</h1>
         <form method="get" action="{{ path('workouts_index') }}" class="mb-3">
             <div class="input-group">
@@ -50,6 +55,7 @@
                     </td>
                 </tr>
                     {% else %}
+                        {% if app.user.userId is defined %}
                         {% if workout.user == app.user.userId %}
                             <tr>
                                 <td>{{ workout.id }}</td>
@@ -67,6 +73,7 @@
                                 </td>
                             </tr>
                             {% endif %}
+                            {% endif %}
                 {% endif %}
             {% endfor %}
             </tbody>
@@ -77,6 +84,8 @@
 
         {% if is_granted("IS_AUTHENTICATED") %}
         <a href="{{ path('workouts_new') }}" class="btn btn-success">New Workout</a>
+        {% endif %}
+
         {% endif %}
     </div>
 {% endblock %}
