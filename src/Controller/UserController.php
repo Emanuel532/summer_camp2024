@@ -31,14 +31,20 @@ class UserController extends AbstractController
     }
 
     #[Route('/users', name: 'users', methods: ['GET'])]
-    public function viewAllUsers(UserRepository $userRepository): Response {
+    public function viewAllUsers(UserRepository $userRepository, EntityManagerInterface $entityManager): Response {
 
+        if($this->getUser() != null) {
+            $hasAccess = $this->isGranted('ROLE_ADMIN');
+            if($hasAccess) {
+                $users = $userRepository->findAll();
+                return $this->render('users/view_users.html.twig', ['users' => $users]);
+            } else {
+                return $this->redirectToRoute('view_user', ['id' => $this->getUser()->getUserId()->getId()]);
+            }
 
+        }
+        return $this->redirectToRoute('app_login');
 
-        dd($this->getUser()->getRoles());
-        $users = $userRepository->findAll();
-
-        return $this->render('users/view_users.html.twig', ['users' => $users]);
     }
 
     #[Route('/users/{id}', name: 'view_user', requirements: ['id' => '\d+'], methods: ['GET'])]

@@ -56,7 +56,6 @@ class WorkoutController extends AbstractController
             $user = $userRepository->find($arrayValori['user']);
             $workout->setUser($user);
 
-
             $date = DateTime::createFromFormat('Y-m-d', $arrayValori['date']);
             $workout->setDate($date);
 

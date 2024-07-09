@@ -33,6 +33,7 @@
             </thead>
             <tbody data-pagination-target="tableBody">
             {% for workout in workouts %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <tr>
                     <td>{{ workout.id }}</td>
                     <td><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }}</a></td>
@@ -48,12 +49,34 @@
                         <a href="{{ path('workouts_edit', {'id': workout.id}) }}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
+                    {% else %}
+                        {% if workout.user == app.user.userId %}
+                            <tr>
+                                <td>{{ workout.id }}</td>
+                                <td><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }}</a></td>
+                                <td>{{ workout.tipId.nume }}</td>
+                                <td>{{ workout.date ? workout.date|date('Y-m-d') : '' }}</td>
+                                <td>{{ workout.nume }}</td>
+                                <td>
+                                    <form id="delete-form-{{ workout.id }}" action="{{ path('workouts_delete', {'id': workout.id}) }}" method="post" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ workout.id) }}">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this workout?')">Delete</button>
+                                    </form>
+                                    <a href="{{ path('workouts_edit', {'id': workout.id}) }}" class="btn btn-primary">Edit</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
         <nav>
             <ul class="pagination justify-content-center" data-pagination-target="pagination"></ul>
         </nav>
+
+        {% if is_granted("IS_AUTHENTICATED") %}
         <a href="{{ path('workouts_new') }}" class="btn btn-success">New Workout</a>
+        {% endif %}
     </div>
 {% endblock %}

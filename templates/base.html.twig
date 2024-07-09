@@ -34,9 +34,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('view_exercises') }}">Exercises</a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('users') }}">Users</a>
             </li>
+            {% endif %}
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
