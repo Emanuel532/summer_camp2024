@@ -36,7 +36,8 @@ class BMIController extends AbstractController
             $entityManager->persist($bmiLog);
             $entityManager->flush();
 
-            header("Refresh:0");
+            $this->redirectToRoute('bmi');
+
         }
         $bmiLogs = $bmiLogRepository->findBy(['user' => $user->getId()]);
 

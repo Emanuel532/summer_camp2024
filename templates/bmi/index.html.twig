@@ -11,14 +11,14 @@
     <button class="btn btn-primary">Submit</button>
     {{ form_end(form) }}
 
-    //add refresh button
-    //add bmi to navbar
+    //add button feedback
     <h2>Your BMI History</h2>
     <canvas id="bmiChart"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             let bmiLogs = [
             ];
@@ -29,13 +29,13 @@
                 obj['createdAt'] = new Date( "{{ bmilog.createdAt|date }}" );
                 bmiLogs.push(obj);
             {% endfor %}
-            console.log(bmiLogs);
+            console.log(bmiLogs.map(log => log.createdAt));
 
             const ctx = document.getElementById('bmiChart').getContext('2d');
             const data = {
                 labels: bmiLogs.map(log => log.createdAt),
                 datasets: [{
-                    label: 'BMI History',
+                    label: 'History',
                     data: bmiLogs.map(log => log.weight / ((log.height / 100) ** 2)),
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -60,14 +60,14 @@
                             },
                             title: {
                                 display: true,
-                                text: 'BMI Registered At'
+                                text: 'Registered At'
                             }
                         },
                         y: {
                             beginAtZero: false,
                             title: {
                                 display: true,
-                                text: 'BMI value'
+                                text: 'value'
                             }
                         }
                     },
@@ -75,7 +75,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `BMI: ${context.raw.toFixed(2)}`;
+                                    return `BMI value: ${context.raw.toFixed(2)}`;
                                 }
                             }
                         }

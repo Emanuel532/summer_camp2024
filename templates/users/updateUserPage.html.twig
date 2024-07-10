@@ -23,6 +23,18 @@
             {{ form_errors(form.gender) }}
         </div>
 
+        <div class="form-group">
+            {{ form_label(form.height) }}
+            {{ form_widget(form.height, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.height) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.weight) }}
+            {{ form_widget(form.weight, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.weight) }}
+        </div>
+
         <button type="submit" class="btn btn-primary">Save changes</button>
         {{ form_end(form) }}
     </div>

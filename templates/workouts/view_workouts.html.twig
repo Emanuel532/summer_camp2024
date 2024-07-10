@@ -55,7 +55,6 @@
                     </td>
                 </tr>
                     {% else %}
-                        {% if app.user.userId is defined %}
                         {% if workout.user == app.user.userId %}
                             <tr>
                                 <td>{{ workout.id }}</td>
@@ -72,7 +71,6 @@
                                     <a href="{{ path('workouts_edit', {'id': workout.id}) }}" class="btn btn-primary">Edit</a>
                                 </td>
                             </tr>
-                            {% endif %}
                             {% endif %}
                 {% endif %}
             {% endfor %}

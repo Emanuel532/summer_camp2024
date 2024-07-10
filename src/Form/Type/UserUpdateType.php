@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -22,7 +23,8 @@ class UserUpdateType extends AbstractType
             ->add('gender', ChoiceType::class,
                 ['choices' =>
                 ['Male' => 'male', 'Female' => 'female', 'Prefer not to say' => 'n']]
-            );
+            )->add('height', NumberType::class)
+        ->add('weight', NumberType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
