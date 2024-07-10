@@ -32,7 +32,7 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $gender = null;
 
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval:true)]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserAccount $userAccount = null;
 

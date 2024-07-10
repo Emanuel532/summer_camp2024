@@ -35,7 +35,7 @@ class Workout implements \ArrayAccess
     /**
      * @var Collection<int, ExerciseLog>
      */
-    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout')]
+    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', orphanRemoval: true)]
     private Collection $exerciseLogs;
 
     public function __construct()

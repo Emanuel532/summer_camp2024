@@ -55,7 +55,7 @@
                     </td>
                 </tr>
                     {% else %}
-                        {% if workout.user == app.user.userId %}
+                        {% if workout.user.id == user.id %}
                             <tr>
                                 <td>{{ workout.id }}</td>
                                 <td><a href="{{ path('workouts_show', {'id': workout.id}) }}">{{ workout.nume }}</a></td>

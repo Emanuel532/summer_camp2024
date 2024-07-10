@@ -19,7 +19,7 @@ class BMIController extends AbstractController
     #[Route('/bmi', name: 'bmi')]
     public function index(Request $request, EntityManagerInterface $entityManager, BMILogRepository $bmiLogRepository, UserRepository $userRepository): Response
     {
-        $user = $userRepository->find($this->getUser()->getUserId());
+        $user = $userRepository->findBy(['userAccount' => $this->getUser()->getId()])[0];
         $form = $this->createForm(BMIType::class);
         $form->handleRequest($request);
 

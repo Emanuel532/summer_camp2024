@@ -24,7 +24,9 @@ class UserController extends AbstractController
     {
         //get your current connected user
         if ($this->getUser() != null) {
-            return $this->redirectToRoute('view_user', ['id' => $this->getUser()->getUserId()->getId()]);
+            $user = $userRepository->findBy(['userAccount' => $this->getUser()->getId()])[0];
+
+            return $this->redirectToRoute('view_user', ['id' => $user->getId()]);
         } else {
             return $this->redirectToRoute('app_login');
         }
@@ -82,8 +84,13 @@ class UserController extends AbstractController
     {
         $user = $userRepository->find($id);
         $account_id = $user->getUserAccount()->getId();
+
+        $userRepository->deleteUser($user->getId());
+
         $userAccountRepository->deleteUser($account_id);
+
         $deletedRows = $userRepository->deleteUser($id);
+
         $status = $deletedRows > 0 ? 'success' : 'failure';
 
         return new JsonResponse(['status' => $status, 'user_id' => $id]);

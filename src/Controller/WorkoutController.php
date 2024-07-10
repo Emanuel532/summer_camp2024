@@ -21,20 +21,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class WorkoutController extends AbstractController
 {
     #[Route('/workouts', name: 'workouts_index', methods: ['GET'])]
-    public function index(WorkoutRepository $workoutRepository, Request $request): Response
+    public function index(WorkoutRepository $workoutRepository, Request $request, UserRepository $userRepository): Response
     {
 
-
+        $user = $userRepository->findBy(['userAccount' => $this->getUser()->getId()])[0];
         $search = $request->query->get('search', '');
         if($search != null){ //if we have a filter query for the name field, return the new results
             $workouts = $workoutRepository->findNameBySearchQuery($search);
+
+
             return $this->render('workouts/view_workouts.html.twig', [
                 'workouts' => $workouts,
+                'user' => $user,
             ]);
         }
+
         $workouts = $workoutRepository->findAll();
         return $this->render('workouts/view_workouts.html.twig', [
             'workouts' => $workouts,
+            'user' => $user,
         ]);
     }
 

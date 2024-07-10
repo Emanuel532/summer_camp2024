@@ -31,10 +31,8 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $user_id = null;
 
-    #[ORM\OneToOne(mappedBy: 'userAccount', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'userAccount', cascade: ['persist', 'remove'], orphanRemoval:true)]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -112,17 +110,6 @@ class UserAccount implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUserId(): ?User
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?User $user_id): static
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
