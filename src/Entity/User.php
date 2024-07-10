@@ -36,12 +36,25 @@ class User
     #[ORM\JoinColumn(nullable: false)]
     private ?UserAccount $userAccount = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $weight = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $height = null;
+
+    /**
+     * @var Collection<int, BMILog>
+     */
+    #[ORM\OneToMany(targetEntity: BMILog::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $BMILogs;
+
 
 
 
     public function __construct()
     {
         $this->workouts = new ArrayCollection();
+        $this->BMILogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,6 +125,60 @@ class User
     public function setUserAccount(UserAccount $userAccount): static
     {
         $this->userAccount = $userAccount;
+
+        return $this;
+    }
+
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(?int $weight): static
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(?int $height): static
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BMILog>
+     */
+    public function getBMILogs(): Collection
+    {
+        return $this->BMILogs;
+    }
+
+    public function addBMILog(BMILog $bMILog): static
+    {
+        if (!$this->BMILogs->contains($bMILog)) {
+            $this->BMILogs->add($bMILog);
+            $bMILog->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBMILog(BMILog $bMILog): static
+    {
+        if ($this->BMILogs->removeElement($bMILog)) {
+            // set the owning side to null (unless already changed)
+            if ($bMILog->getUser() === $this) {
+                $bMILog->setUser(null);
+            }
+        }
 
         return $this;
     }

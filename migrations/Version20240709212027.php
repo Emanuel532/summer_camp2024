@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240708134126 extends AbstractMigration
+final class Version20240709212027 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,9 @@ final class Version20240708134126 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE user ADD weight INT DEFAULT NULL, ADD height INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6493C0C9956 FOREIGN KEY (user_account_id) REFERENCES user_account (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D6493C0C9956 ON user (user_account_id)');
     }
 
     public function down(Schema $schema): void
@@ -27,6 +30,6 @@ final class Version20240708134126 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6493C0C9956');
         $this->addSql('DROP INDEX UNIQ_8D93D6493C0C9956 ON user');
-        $this->addSql('ALTER TABLE user DROP user_account_id');
+        $this->addSql('ALTER TABLE user DROP weight, DROP height');
     }
 }

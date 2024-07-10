@@ -41,8 +41,12 @@
                 <a class="nav-link" href="{{ path('workouts_index') }}">Workouts</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ path('bmi') }}">BMI</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
             </li>
+
             {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_login') }}">Login</a>
